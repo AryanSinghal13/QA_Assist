@@ -23,6 +23,12 @@ The entry point and primary orchestrator.
   - Renders the `Dashboard`, `From Screenshot`, `From Requirements`, `Test History`, and `Users` pages.
   - Central helper functions for Gemini client init (`configure_model()`) and Excel formatting (`build_excel()`).
 
+### `in_sprint_page.py`
+Specialized module for simultaneous generation of manual and automated tests.
+- **Responsibilities:**
+  - Parallel generation of manual TCs (via shared logic) and Automation scripts (via automation module logic).
+  - Maintains separate framework selection state from the main automation page.
+
 ### `automation_page.py`
 Modularized page logic specifically for the "Automation Scripts" tab.
 - **Responsibilities:**
@@ -50,7 +56,8 @@ Centralized CSS payload.
 ### `users.json`
 Local persistent database for user accounts.
 - **Responsibilities:**
-  - Stores SHA-256 hashed passwords, session counts, and basic user metadata. 
+  - Stores SHA-256 hashed passwords, session counts, and the critical `approved` boolean flag.
+  - Admin accounts are automatically injected with `approved: true`. 
 
 ---
 
@@ -63,8 +70,10 @@ Streamlit's `st.session_state` is heavily utilized. When making changes, ensure 
 - `history` (list[dict]): Ephemeral storage for test cases generated *during the current session*. Rendered on the Dashboard and Test History pages.
 - `reg_flash` (str | None): Used for the redirect-flash-message pattern after a successful registration.
 - `selected_fw` (str): The currently chosen automation framework in `automation_page.py`.
-- `repo_context` (str): The stringified code content parsed from the user's uploaded/cloned Git repository, used as context for the AI.
-- `auto_history` (list[dict]): Ephemeral storage for automation scripts generated during the session.
+- `repo_context` (str): The stringified code content parsed from the user's repository.
+- `repo_label` (str): The display name/URL of the currently loaded repository.
+- `auto_history` (list[dict]): Ephemeral storage for automation scripts.
+- `sprint_selected_fw` (str): Framework choice specific to the In-Sprint page.
 
 ---
 
@@ -84,7 +93,13 @@ Streamlit's `st.session_state` is heavily utilized. When making changes, ensure 
 
 ### 4.4 Advanced Excel Formatting
 - Dataframes are exported to Excel using `openpyxl`.
-- The `build_excel()` function in `app.py` manually applies background colors, frozen panes, bold text, column width constraints, and dynamic Priority-based conditional coloring (Red/Yellow/Green) directly to the `.xlsx` binary buffer before downloading.
+- The `build_excel()` function in `app.py` manually applies background colors, frozen panes, bold text, column width constraints, and dynamic Priority-based conditional coloring (Red/Yellow/Green).
+
+### 4.5 Admin Approval Flow
+- The application uses a gated authentication model. 
+- `authenticate()` checks for the `approved` key in the user object.
+- `load_users()` includes a migration check to ensure `admin` is always set to `approved: true`.
+- New registrations trigger a `st.rerun()` with a flash message, and the user remains locked out until an admin visits the `Users` page to toggle their status.
 
 ---
 

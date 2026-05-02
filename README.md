@@ -8,14 +8,12 @@
 
 - **📸 Generate from Screenshot**: Upload a UI screenshot, wireframe, or mockup. The vision AI analyzes the layout, buttons, and fields to instantly generate comprehensive test cases.
 - **📝 Generate from Requirements**: Paste user stories, Jira tickets, or acceptance criteria to receive structured test suites covering positive, negative, and edge cases.
-- **🤖 Automation Script Generator**: Link a Git repository (or local folder) so the AI can learn your project's framework structure (POM, selectors, assertions). It then generates ready-to-run automation scripts for:
-  - Selenium (Python)
-  - Playwright (Python & JS/TS)
-  - WebdriverIO (JS)
-  - Cucumber (JS/WDIO & Java/Selenium)
-- **📊 Advanced Exporting**: Download generated test cases as heavily formatted, production-ready Excel (`.xlsx`) files or UTF-8 compatible CSV files.
-- **👥 User Management**: Built-in, secure local authentication system with an admin dashboard for user lifecycle management.
-- **💅 Premium UI**: A highly responsive, glassmorphic dark-mode interface built for speed (using advanced in-memory data caching).
+- **🚀 In-Sprint Automation**: The ultimate productivity booster. Paste a single JIRA ticket or requirement to generate both manual test cases and corresponding automation code simultaneously.
+- **📈 Pipeline Report Refinement**: Upload Allure result files (JSON or ZIP). The app cleans, analyzes, and transforms raw logs into a beautiful, debug-ready Excel dashboard with bar charts and error-tracing logic.
+- **📊 Advanced Exporting**: Download test cases as heavily formatted Excel (`.xlsx`) files with frozen panes and conditional colors.
+- **🔒 Secure Admin Approval**: New users can register but are blocked from logging in until an administrator manually approves them from the secure "Users" dashboard.
+- **👥 User Management**: Full lifecycle management, password rotation, and user deletion for admins.
+- **💅 Premium UI**: A highly responsive, glassmorphic dark-mode interface built for speed using advanced caching.
 
 ---
 
@@ -32,8 +30,8 @@ Before you begin, ensure you have the following installed on your machine:
 
 **1. Clone the repository (or download the folder)**
 ```bash
-git clone https://github.com/your-username/qa-assist.git
-cd qa-assist
+git clone https://github.com/AryanSinghal13/QA_Assist.git
+cd QA_Assist
 ```
 
 **2. Create a virtual environment (Recommended)**
@@ -80,12 +78,15 @@ On your first run, an admin account is automatically generated:
 
 ```text
 qa-assist/
-├── app.py                  # Main application, routing, auth, and Test Case generation UI
-├── automation_page.py      # Logic & UI for the Automation Script Generator
-├── styles.py               # Custom CSS injection for the premium dark-theme UI
+├── app.py                  # Main orchestration, routing, and authentication gate
+├── automation_page.py      # Module for standalone automation script generation
+├── in_sprint_page.py       # Dual-output generator (Manual + Auto) from single tickets
+├── pipeline_report_page.py  # Allure report parsing and Excel refinement engine
+├── styles.py               # Centralized premium CSS and UI components
+├── shared.py               # Shared AI utilities and common UI functions
 ├── requirements.txt        # Python dependencies
-├── .env                    # Environment variables (API Key) - YOU MUST CREATE THIS
-└── users.json              # Auto-generated local database for user authentication
+├── .env                    # API Keys (GOOGLE_API_KEY)
+└── users.json              # Local DB for users (including 'approved' status)
 ```
 
 ---
